@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="860.0" style="-fx-background-color: #393351;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.darksoft.banco_taller.CuidadController">
+   <children>
+      <VBox alignment="TOP_RIGHT" layoutX="28.0" layoutY="31.0" prefHeight="217.0" prefWidth="804.0" spacing="5.0" style="-fx-background-color: #413962;">
+         <children>
+            <HBox alignment="CENTER" prefHeight="68.0" prefWidth="804.0">
+               <children>
+                  <Label text="Departamento: " textFill="WHITE">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="cbDepartamento" prefHeight="34.0" prefWidth="650.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="68.0" prefWidth="804.0">
+               <children>
+                  <Label text="Municipio: " textFill="WHITE">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="cbMunicipio" prefHeight="34.0" prefWidth="650.0">
+                     <HBox.margin>
+                        <Insets left="40.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="68.0" prefWidth="804.0">
+               <children>
+                  <Label text="Ciudad: " textFill="WHITE">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="cbCiudad" prefHeight="34.0" prefWidth="650.0">
+                     <HBox.margin>
+                        <Insets left="60.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+            <Button fx:id="btnAgregarCiudad" mnemonicParsing="false" prefHeight="57.0" prefWidth="145.0" text="Agregar ciudad">
+               <VBox.margin>
+                  <Insets bottom="5.0" right="5.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

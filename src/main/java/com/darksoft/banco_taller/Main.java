@@ -11,8 +11,8 @@ import java.io.IOException;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-        stage.setTitle("Banco Mundial!");
+        Parent root = FXMLLoader.load(Main.class.getResource("Main.fxml"));
+        stage.setTitle("Banco Mundial");
         stage.setScene(new Scene(root));
         stage.show();
     }

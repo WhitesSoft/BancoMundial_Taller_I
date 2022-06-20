@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="731.0" prefWidth="1234.0" style="-fx-background-color: #212121;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox alignment="BASELINE_LEFT" prefHeight="731.0" prefWidth="258.0" style="-fx-background-color: #393351;">
+<BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="762.0" prefWidth="1154.0" style="-fx-background-color: #212121;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.darksoft.banco_taller.MainController">
+   <left>
+      <VBox prefHeight="762.0" prefWidth="232.0" style="-fx-background-color: #393351;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="181.0" fitWidth="260.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="170.0" fitWidth="238.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../images/logo.png" />
                </image>
             </ImageView>
-            <Button alignment="CENTER" graphicTextGap="20.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="258.0" stylesheets="@../../../css/style.css" text="INICIO" textFill="WHITE">
+            <Button fx:id="btnInicio" graphicTextGap="20.0" mnemonicParsing="false" onAction="#buttons" prefHeight="68.0" prefWidth="251.0" stylesheets="@../../../css/style.css" text="Inicio" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -26,11 +25,11 @@
                      </image>
                   </ImageView>
                </graphic>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
             </Button>
-            <Button alignment="CENTER" graphicTextGap="20.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="258.0" stylesheets="@../../../css/style.css" text="SOCIOS" textFill="WHITE">
+            <Button fx:id="btnSocios" graphicTextGap="20.0" mnemonicParsing="false" onAction="#buttons" prefHeight="68.0" prefWidth="251.0" stylesheets="@../../../css/style.css" text="Socios" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -38,11 +37,11 @@
                      </image>
                   </ImageView>
                </graphic>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
             </Button>
-            <Button alignment="CENTER" graphicTextGap="20.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="258.0" stylesheets="@../../../css/style.css" text="BANCOS" textFill="WHITE">
+            <Button fx:id="btnBancos" graphicTextGap="20.0" mnemonicParsing="false" onAction="#buttons" prefHeight="68.0" prefWidth="251.0" stylesheets="@../../../css/style.css" text="Bancos" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -50,11 +49,23 @@
                      </image>
                   </ImageView>
                </graphic>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
             </Button>
-            <Button alignment="CENTER" graphicTextGap="20.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="258.0" stylesheets="@../../../css/style.css" text="SALIR" textFill="WHITE">
+            <Button fx:id="btnCiudad" graphicTextGap="20.0" mnemonicParsing="false" onAction="#buttons" prefHeight="68.0" prefWidth="251.0" stylesheets="@../../../css/style.css" text="Cuidad" textFill="WHITE">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/skyline.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnSalir" graphicTextGap="20.0" mnemonicParsing="false" onAction="#buttons" prefHeight="68.0" prefWidth="251.0" stylesheets="@../../../css/style.css" text="Salir" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -62,17 +73,17 @@
                      </image>
                   </ImageView>
                </graphic>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
             </Button>
          </children>
       </VBox>
-      <AnchorPane layoutX="281.0" layoutY="104.0" prefHeight="603.0" prefWidth="929.0" style="-fx-background-color: #393351;" />
-      <Label layoutX="627.0" layoutY="34.0" text="BANCO MUNDIAL" textFill="WHITE">
-         <font>
-            <Font name="Loma Bold" size="28.0" />
-         </font>
-      </Label>
-   </children>
-</AnchorPane>
+   </left>
+   <center>
+      <AnchorPane fx:id="contenedor" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane layoutX="28.0" layoutY="31.0" prefHeight="700.0" prefWidth="860.0" style="-fx-background-color: #393351;" />
+         </children></AnchorPane>
+   </center>
+</BorderPane>
