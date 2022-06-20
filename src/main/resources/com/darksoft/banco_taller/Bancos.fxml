@@ -30,6 +30,9 @@
                <padding>
                   <Insets top="15.0" />
                </padding>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
             </HBox>
             <HBox alignment="CENTER" prefHeight="60.0" prefWidth="804.0">
                <children>
@@ -53,7 +56,7 @@
             </HBox>
             <Button mnemonicParsing="false" prefHeight="48.0" prefWidth="115.0" text="Agregar banco">
                <VBox.margin>
-                  <Insets bottom="10.0" right="25.0" />
+                  <Insets bottom="20.0" right="25.0" />
                </VBox.margin>
             </Button>
          </children>

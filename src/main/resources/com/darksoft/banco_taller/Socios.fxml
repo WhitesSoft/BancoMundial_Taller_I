@@ -111,9 +111,12 @@
             <Insets bottom="20.0" top="20.0" />
          </padding>
       </VBox>
-      <VBox layoutX="31.0" layoutY="331.0" prefHeight="340.0" prefWidth="804.0" spacing="10.0" style="-fx-background-color: #413962;">
+      <VBox layoutX="31.0" layoutY="316.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="804.0" spacing="10.0" style="-fx-background-color: #413962;">
          <children>
-            <ListView fx:id="lvSocios" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="750.0" />
+            <ListView fx:id="lvSocios" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="750.0">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="20.0" />
+               </VBox.margin></ListView>
          </children>
       </VBox>
    </children>
