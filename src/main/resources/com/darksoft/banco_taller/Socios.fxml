@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="860.0" style="-fx-background-color: #393351;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="860.0" style="-fx-background-color: #393351;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.darksoft.banco_taller.SociosController">
    <children>
       <VBox alignment="CENTER_RIGHT" layoutX="31.0" layoutY="30.0" prefHeight="262.0" prefWidth="804.0" spacing="5.0" style="-fx-background-color: #413962;">
          <children>
@@ -101,7 +101,7 @@
                   </ComboBox>
                </children>
             </HBox>
-            <Button fx:id="btnAgregarSocio" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="100.0" prefWidth="120.0" text="Agregar" textAlignment="CENTER">
+            <Button fx:id="btnAgregarSocio" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#agregarSocio" prefHeight="100.0" prefWidth="120.0" text="Agregar" textAlignment="CENTER">
                <VBox.margin>
                   <Insets right="20.0" top="10.0" />
                </VBox.margin>
