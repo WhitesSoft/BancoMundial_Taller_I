@@ -54,7 +54,7 @@
                   <ComboBox fx:id="cbCiudad" prefHeight="34.0" prefWidth="680.0" />
                </children>
             </HBox>
-            <Button mnemonicParsing="false" prefHeight="48.0" prefWidth="115.0" text="Agregar banco">
+            <Button fx:id="btnAgregarBanco" mnemonicParsing="false" onAction="#agregarBanco" prefHeight="48.0" prefWidth="115.0" text="Agregar banco">
                <VBox.margin>
                   <Insets bottom="20.0" right="25.0" />
                </VBox.margin>

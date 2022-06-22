@@ -49,59 +49,7 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-               <children>
-                  <Label text="Cuenta: " textFill="WHITE">
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="btnCuenta" prefHeight="34.0" prefWidth="680.0">
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-               <children>
-                  <Label text="Moneda: " textFill="WHITE">
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                  </Label>
-                  <ComboBox fx:id="cbMoneda" prefHeight="34.0" prefWidth="680.0" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-               <children>
-                  <Label text="Banco: " textFill="WHITE">
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                  </Label>
-                  <ComboBox fx:id="cbBanco" prefHeight="34.0" prefWidth="680.0">
-                     <HBox.margin>
-                        <Insets left="12.0" />
-                     </HBox.margin>
-                  </ComboBox>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="804.0" spacing="5.0">
-               <children>
-                  <Label text="Ciudad: " textFill="WHITE">
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                  </Label>
-                  <ComboBox fx:id="cbCiudad" prefHeight="34.0" prefWidth="680.0">
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin>
-                  </ComboBox>
-               </children>
-            </HBox>
-            <Button fx:id="btnAgregarSocio" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#agregarSocio" prefHeight="100.0" prefWidth="120.0" text="Agregar" textAlignment="CENTER">
+            <Button fx:id="btnAgregarSocio" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#agregarSocio" prefHeight="83.0" prefWidth="114.0" text="Agregar" textAlignment="CENTER">
                <VBox.margin>
                   <Insets right="20.0" top="10.0" />
                </VBox.margin>
@@ -111,12 +59,89 @@
             <Insets bottom="20.0" top="20.0" />
          </padding>
       </VBox>
-      <VBox layoutX="31.0" layoutY="316.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="804.0" spacing="10.0" style="-fx-background-color: #413962;">
+      <VBox layoutX="31.0" layoutY="316.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="366.0" prefWidth="804.0" spacing="10.0" style="-fx-background-color: #413962;">
          <children>
-            <ListView fx:id="lvSocios" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="750.0">
-               <VBox.margin>
-                  <Insets left="20.0" right="20.0" top="20.0" />
-               </VBox.margin></ListView>
+            <HBox prefHeight="374.0" prefWidth="804.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="366.0" prefWidth="442.0">
+                     <children>
+                        <Label text="LISTA DE SOCIOS" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <ListView fx:id="lvSocios" prefHeight="337.0" prefWidth="411.0">
+                           <VBox.margin>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+                           </VBox.margin>
+                        </ListView>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="366.0" prefWidth="425.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="67.0" prefWidth="394.0" spacing="5.0">
+                           <children>
+                              <Label text="Cuenta: " textFill="WHITE">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="btnCuenta" prefHeight="34.0" prefWidth="270.0">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="70.0" prefWidth="394.0" spacing="5.0">
+                           <children>
+                              <Label text="Moneda: " textFill="WHITE">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="cbMoneda" prefHeight="34.0" prefWidth="270.0" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="64.0" prefWidth="394.0" spacing="5.0">
+                           <children>
+                              <Label text="Banco: " textFill="WHITE">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="cbBanco" prefHeight="34.0" prefWidth="270.0">
+                                 <HBox.margin>
+                                    <Insets left="12.0" />
+                                 </HBox.margin>
+                              </ComboBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="62.0" prefWidth="394.0" spacing="5.0">
+                           <children>
+                              <Label text="Ciudad: " textFill="WHITE">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="cbCiudad" prefHeight="34.0" prefWidth="270.0">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </ComboBox>
+                           </children>
+                        </HBox>
+                        <Button fx:id="btnAgregarCuenta" mnemonicParsing="false" onAction="#agregarCuenta" prefHeight="41.0" prefWidth="149.0" text="Agregar cuenta" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>

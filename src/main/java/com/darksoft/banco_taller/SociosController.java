@@ -1,6 +1,7 @@
 package com.darksoft.banco_taller;
 
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,24 +20,31 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SociosController implements Initializable {
+
+    private JSONArray listaArraySocios;
+    ObservableList<String> ciudades = FXCollections.observableArrayList();
+    HashMap<String, String> valoresCuidad = new HashMap<>();
+
+    @FXML
+    private Button btnAgregarCuenta;
 
     @FXML
     private Button btnAgregarSocio;
 
     @FXML
-    private TextField btnCuenta;
-
-    @FXML
     private ComboBox<?> cbBanco;
 
     @FXML
-    private ComboBox<?> cbCiudad;
+    private ComboBox<String> cbCiudad;
 
     @FXML
-    private ComboBox<?> cbMoneda;
+    private ComboBox<String> cbMoneda;
 
     @FXML
     private TextField fieldApellido;
@@ -48,20 +56,71 @@ public class SociosController implements Initializable {
     private TextField fieldNombre;
 
     @FXML
-    private ListView<?> lvSocios;
+    private ListView<String> lvSocios;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        listarSocios();
 
+        //cb TipoMoneda
+        ObservableList<String> tipoMoneda = FXCollections.observableArrayList();
+        tipoMoneda.add("Bolivianos");
+        tipoMoneda.add("Dolares");
+        cbMoneda.setItems(tipoMoneda);
+
+        obtenerCiudades();
+
+    }
+
+    private void obtenerCiudades() {
+
+        ObservableList<String> ciudades = FXCollections.observableArrayList();
+
+        HttpClient cliente = HttpClient.newHttpClient();
+        HttpRequest solicitud = HttpRequest.newBuilder().
+                uri(URI.create("http://localhost:8080/ciudades")).
+                header("Content-Type", "application/json").
+                GET().build();
+
+        String respuesta = cliente.sendAsync(solicitud, BodyHandlers.ofString())
+                .thenApply(HttpResponse::body).join();
+
+        JSONObject ciudadesJSON = new JSONObject(respuesta);
+
+        System.out.println(ciudadesJSON);
+
+        JSONArray listaArrayCiudades = ciudadesJSON.optJSONObject("_embedded").optJSONArray("Ciudad");
+
+
+        for (Object object : listaArrayCiudades) {
+            JSONObject elemento = new JSONObject(object.toString());
+            String href = elemento.getJSONObject("_links").getJSONObject("self").getString("href");
+
+            int id = Integer.parseInt(href.substring(href.lastIndexOf("/")+1));
+            String ciudad = elemento.getString("ciudad");
+            valoresCuidad.put(String.valueOf(id), ciudad);
+
+            ciudades.add(ciudad);
+        }
+        System.out.println(valoresCuidad);
+        cbCiudad.setItems(ciudades);
+    }
+
+    @FXML
+    private void agregarCuenta(){
+        String ciudadSeleccionada = cbCiudad.getValue();
+        String llave = getSingleKeyFromValue(valoresCuidad, ciudadSeleccionada);
+        System.out.println(ciudadSeleccionada);
+        System.out.println(llave);
     }
 
     @FXML
     private void agregarSocio() throws IOException {
         //Obtenemos los datos a enviar
         JSONObject nuevoSocio = new JSONObject();
-        nuevoSocio.put("nombre_socio", fieldNombre.getText());
-        nuevoSocio.put("apellido_socio", fieldApellido.getText());
-        nuevoSocio.put("cedula", fieldCarnet.getText());
+        nuevoSocio.put("nombreSocio", fieldNombre.getText());
+        nuevoSocio.put("apellidoSocio", fieldApellido.getText());
+        nuevoSocio.put("cedula", Integer.parseInt(fieldCarnet.getText()));
 
         //Hacemos el post
         HttpClient cliente = HttpClient.newHttpClient();
@@ -74,11 +133,50 @@ public class SociosController implements Initializable {
                 .thenApply(HttpResponse::body).join();
 
         System.out.println(respuesta);
-        if (respuesta.equals(""))
+        if (respuesta.equals("")) {
             System.out.println("Socio agregado");
-        else{
-            System.out.println("No se pudo agregar el socio");
-        }
+            listarSocios();
 
+            fieldNombre.setText("");
+            fieldApellido.setText("");
+            fieldCarnet.setText("");
+        }
+        else
+            System.out.println("No se pudo agregar el socio");
+
+
+    }
+
+    @FXML
+    private void listarSocios(){
+        HttpClient cliente = HttpClient.newHttpClient();
+        HttpRequest solicitud = HttpRequest.newBuilder().
+                uri(URI.create("http://localhost:8080/socios")).
+                header("Conten-Type", "application/json").
+                GET().build();
+
+        String respuesta = cliente.sendAsync(solicitud, BodyHandlers.ofString())
+                .thenApply(HttpResponse::body).join();
+
+        JSONObject socios = new JSONObject(respuesta);
+
+        listaArraySocios = socios.optJSONObject("_embedded").optJSONArray("Socio");
+
+        lvSocios.getItems().clear();
+
+        for (Object object: listaArraySocios){
+            JSONObject elemento = new JSONObject(object.toString());
+            lvSocios.getItems().add(elemento.getString("nombreSocio") + " " + elemento.getString("apellidoSocio"));
+        }
+    }
+
+    //Metodo para obtener la llave de un valor
+    public static <K, V> K getSingleKeyFromValue(Map<K, V> map, V value) {
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            if (Objects.equals(value, entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }
