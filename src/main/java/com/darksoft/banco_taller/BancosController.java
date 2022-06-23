@@ -24,6 +24,8 @@ import java.util.ResourceBundle;
 public class BancosController implements Initializable {
 
     HashMap<String, String> valoresCuidad = new HashMap<>();
+    private JSONArray lista;
+
     @FXML
     private Button btnAgregarBanco;
 
@@ -55,8 +57,6 @@ public class BancosController implements Initializable {
 
         JSONObject ciudadesJSON = new JSONObject(respuesta);
 
-        System.out.println(ciudadesJSON);
-
         JSONArray listaArrayCiudades = ciudadesJSON.optJSONObject("_embedded").optJSONArray("Ciudad");
 
 
@@ -70,7 +70,7 @@ public class BancosController implements Initializable {
             valoresCuidad.put(String.valueOf(id), ciudad);
             ciudades.add(ciudad);
         }
-        System.out.println(valoresCuidad);
+        //System.out.println(valoresCuidad);
         cbCiudad.setItems(ciudades);
     }
 
@@ -80,11 +80,12 @@ public class BancosController implements Initializable {
         String ciudadSeleccionada = cbCiudad.getValue();
         String llave = getSingleKeyFromValue(valoresCuidad, ciudadSeleccionada);
 
-        //Obtenemos los datos a enviar al servidor
+        String id = "http://localhost:8080/ciudades/" + llave;
+
         JSONObject nuevoBanco = new JSONObject();
         nuevoBanco.put("sigla", fieldSigla.getText());
         nuevoBanco.put("denominacion", fieldDenominacion.getText());
-        //nuevoBanco.put()
+        nuevoBanco.put("idCiudad", llave);
 
         //Hacemos el post
         HttpClient cliente = HttpClient.newHttpClient();

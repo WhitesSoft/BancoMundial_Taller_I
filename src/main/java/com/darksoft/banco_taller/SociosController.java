@@ -28,8 +28,9 @@ import java.util.ResourceBundle;
 public class SociosController implements Initializable {
 
     private JSONArray listaArraySocios;
-    ObservableList<String> ciudades = FXCollections.observableArrayList();
+    ObservableList<String> bancos = FXCollections.observableArrayList();
     HashMap<String, String> valoresCuidad = new HashMap<>();
+    HashMap<String, String> valoresBanco = new HashMap<>();
 
     @FXML
     private Button btnAgregarCuenta;
@@ -38,7 +39,7 @@ public class SociosController implements Initializable {
     private Button btnAgregarSocio;
 
     @FXML
-    private ComboBox<?> cbBanco;
+    private ComboBox<String> cbBanco;
 
     @FXML
     private ComboBox<String> cbCiudad;
@@ -69,7 +70,40 @@ public class SociosController implements Initializable {
         cbMoneda.setItems(tipoMoneda);
 
         obtenerCiudades();
+        obtenerBancos();
 
+    }
+
+    private void obtenerBancos() {
+        ObservableList<String> bancos = FXCollections.observableArrayList();
+
+        HttpClient cliente = HttpClient.newHttpClient();
+        HttpRequest solicitud = HttpRequest.newBuilder().
+                uri(URI.create("http://localhost:8080/bancos")).
+                header("Content-Type", "application/json").
+                GET().build();
+
+        String respuesta = cliente.sendAsync(solicitud, BodyHandlers.ofString())
+                .thenApply(HttpResponse::body).join();
+
+        JSONObject bancosJSON = new JSONObject(respuesta);
+
+        JSONArray listaArrayBancos = bancosJSON.optJSONObject("_embedded").optJSONArray("Banco");
+
+
+        for (Object object : listaArrayBancos) {
+            JSONObject elemento = new JSONObject(object.toString());
+            String href = elemento.getJSONObject("_links").getJSONObject("self").getString("href");
+
+            String id = href.substring(29);
+            String banco = elemento.getString("denominacion");
+
+            valoresBanco.put(id, banco);
+
+            bancos.add(id);
+        }
+        System.out.println(valoresBanco);
+        cbBanco.setItems(bancos);
     }
 
     private void obtenerCiudades() {
@@ -87,10 +121,7 @@ public class SociosController implements Initializable {
 
         JSONObject ciudadesJSON = new JSONObject(respuesta);
 
-        System.out.println(ciudadesJSON);
-
         JSONArray listaArrayCiudades = ciudadesJSON.optJSONObject("_embedded").optJSONArray("Ciudad");
-
 
         for (Object object : listaArrayCiudades) {
             JSONObject elemento = new JSONObject(object.toString());
@@ -108,10 +139,13 @@ public class SociosController implements Initializable {
 
     @FXML
     private void agregarCuenta(){
+        String bancoSeleccionado = cbBanco.getValue();
+        String llaveBanco = getSingleKeyFromValue(valoresBanco, bancoSeleccionado);
+        System.out.println(bancoSeleccionado);
+        System.out.println(llaveBanco);
+
         String ciudadSeleccionada = cbCiudad.getValue();
-        String llave = getSingleKeyFromValue(valoresCuidad, ciudadSeleccionada);
-        System.out.println(ciudadSeleccionada);
-        System.out.println(llave);
+
     }
 
     @FXML
