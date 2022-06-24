@@ -73,7 +73,6 @@ public class BancosController implements Initializable {
     private void agregarBanco() throws IOException {
 
         String ciudadSeleccionada = cbCiudad.getValue();
-        System.out.println(ciudadSeleccionada);
 
         JSONObject nuevoBanco = new JSONObject();
         nuevoBanco.put("sigla", fieldSigla.getText());
@@ -90,9 +89,10 @@ public class BancosController implements Initializable {
         HttpHeaders respuesta = cliente.sendAsync(solicitud, BodyHandlers.ofString())
                 .thenApply(HttpResponse::headers).join();
 
-        if (respuesta.firstValueAsLong("content-length").getAsLong() == 0){
+        System.out.println(respuesta.firstValue("location").get());
+        System.out.println("http://localhost:8080/ciudades/"+ cbCiudad.getValue());
 
-            System.out.println("http://localhost:8080/ciudades/"+ cbCiudad.getValue());
+        if (respuesta.firstValueAsLong("content-length").getAsLong() == 0){
 
             HttpClient relacion = HttpClient.newHttpClient();
             HttpRequest solicitud_muchos_a_muchos = HttpRequest.newBuilder()

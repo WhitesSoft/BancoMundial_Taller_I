@@ -7,7 +7,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -82,9 +84,8 @@
                            <contextMenu>
                               <ContextMenu>
                                 <items>
-                                  <MenuItem mnemonicParsing="false" onAction="#agregarCuentas" text="Agregar cuentas" />
-                                    <MenuItem mnemonicParsing="false" onAction="#listarCuentas" text="Listar cuentas" />
-                                    <MenuItem mnemonicParsing="false" onAction="#movimientos" text="Movimientos" />
+                                  <MenuItem mnemonicParsing="false" onAction="#cuentasMenuVisible" text="Agregar cuentas" />
+                                    <MenuItem mnemonicParsing="false" onAction="#listarCuentasMenuVisible" text="Listar cuentas" />
                                 </items>
                               </ContextMenu>
                            </contextMenu>
@@ -140,10 +141,18 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <ListView fx:id="lvCuentas" prefHeight="302.0" prefWidth="197.0">
+                        <ListView fx:id="lvCuentas" prefHeight="309.0" prefWidth="187.0">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin>
+                           <contextMenu>
+                              <ContextMenu>
+                                <items>
+                                    <MenuItem mnemonicParsing="false" onAction="#movimientosMenuVisible" text="Movimientos" />
+                                    <MenuItem mnemonicParsing="false" onAction="#movimientosMenuEliminar" text="Eliminar" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu>
                         </ListView>
                      </children>
                   </VBox>
@@ -153,7 +162,37 @@
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
                         </Label>
+                        <HBox alignment="CENTER" prefHeight="42.0" prefWidth="197.0">
+                           <children>
+                              <Label text="Movi...:" textFill="WHITE" />
+                              <TextField fx:id="fieldMovimiento" prefHeight="34.0" prefWidth="120.0" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="42.0" prefWidth="197.0">
+                           <children>
+                              <RadioButton fx:id="rbIngreso" mnemonicParsing="false" text="Ingreso" textFill="WHITE">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="tipo" />
+                                 </toggleGroup></RadioButton>
+                              <RadioButton fx:id="rbEgreso" mnemonicParsing="false" text="Egreso" textFill="WHITE" toggleGroup="$tipo">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </RadioButton>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Button fx:id="btnAgregarMovimiento" mnemonicParsing="false" onAction="#agregarMovimiento" prefHeight="34.0" prefWidth="165.0" text="Agregar movimiento">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </Button>
                         <ListView fx:id="lvMovimientos" prefHeight="304.0" prefWidth="197.0">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
