@@ -3,8 +3,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -61,7 +63,7 @@
       </VBox>
       <VBox layoutX="31.0" layoutY="316.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="366.0" prefWidth="804.0" spacing="10.0" style="-fx-background-color: #413962;">
          <children>
-            <HBox prefHeight="374.0" prefWidth="804.0">
+            <HBox alignment="CENTER" prefHeight="374.0" prefWidth="804.0">
                <children>
                   <VBox alignment="CENTER" prefHeight="366.0" prefWidth="442.0">
                      <children>
@@ -77,19 +79,28 @@
                            <VBox.margin>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
                            </VBox.margin>
+                           <contextMenu>
+                              <ContextMenu>
+                                <items>
+                                  <MenuItem mnemonicParsing="false" onAction="#agregarCuentas" text="Agregar cuentas" />
+                                    <MenuItem mnemonicParsing="false" onAction="#listarCuentas" text="Listar cuentas" />
+                                    <MenuItem mnemonicParsing="false" onAction="#movimientos" text="Movimientos" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu>
                         </ListView>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="366.0" prefWidth="425.0">
+                  <VBox fx:id="vbAgregarCuentas" alignment="CENTER" prefHeight="366.0" prefWidth="425.0" visible="false">
                      <children>
                         <HBox alignment="CENTER" prefHeight="67.0" prefWidth="394.0" spacing="5.0">
                            <children>
                               <Label text="Cuenta: " textFill="WHITE">
                                  <font>
-                                    <Font size="17.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="btnCuenta" prefHeight="34.0" prefWidth="270.0">
+                              <TextField fx:id="fieldCuenta" prefHeight="34.0" prefWidth="120.0">
                                  <HBox.margin>
                                     <Insets left="5.0" />
                                  </HBox.margin>
@@ -101,43 +112,53 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="70.0" prefWidth="394.0" spacing="5.0">
                            <children>
-                              <Label text="Moneda: " textFill="WHITE">
-                                 <font>
-                                    <Font size="17.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="cbMoneda" prefHeight="34.0" prefWidth="270.0" />
+                              <Label text="Moneda: " textFill="WHITE" />
+                              <ComboBox fx:id="cbMoneda" prefHeight="34.0" prefWidth="120.0" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="64.0" prefWidth="394.0" spacing="5.0">
                            <children>
                               <Label text="Banco: " textFill="WHITE">
                                  <font>
-                                    <Font size="17.0" />
+                                    <Font size="12.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cbBanco" prefHeight="34.0" prefWidth="270.0">
+                              <ComboBox fx:id="cbBanco" prefHeight="34.0" prefWidth="120.0">
                                  <HBox.margin>
                                     <Insets left="12.0" />
                                  </HBox.margin>
                               </ComboBox>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="62.0" prefWidth="394.0" spacing="5.0">
-                           <children>
-                              <Label text="Ciudad: " textFill="WHITE">
-                                 <font>
-                                    <Font size="17.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="cbCiudad" prefHeight="34.0" prefWidth="270.0">
-                                 <HBox.margin>
-                                    <Insets left="5.0" />
-                                 </HBox.margin>
-                              </ComboBox>
-                           </children>
-                        </HBox>
-                        <Button fx:id="btnAgregarCuenta" mnemonicParsing="false" onAction="#agregarCuenta" prefHeight="41.0" prefWidth="149.0" text="Agregar cuenta" />
+                        <Button fx:id="btnAgregarCuenta" mnemonicParsing="false" onAction="#agregarCuenta" prefHeight="36.0" prefWidth="151.0" text="Agregar cuenta" />
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vbListarCuentas" alignment="CENTER" prefHeight="366.0" prefWidth="425.0" visible="false">
+                     <children>
+                        <Label text="Lista de cuentas" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <ListView fx:id="lvCuentas" prefHeight="302.0" prefWidth="197.0">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </ListView>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vbMovimientos" alignment="CENTER" prefHeight="366.0" prefWidth="425.0" visible="false">
+                     <children>
+                        <Label text="Movimientos" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <ListView fx:id="lvMovimientos" prefHeight="304.0" prefWidth="197.0">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </ListView>
                      </children>
                   </VBox>
                </children>

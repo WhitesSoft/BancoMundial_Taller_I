@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,9 +29,6 @@ import java.util.ResourceBundle;
 public class SociosController implements Initializable {
 
     private JSONArray listaArraySocios;
-    ObservableList<String> bancos = FXCollections.observableArrayList();
-    HashMap<String, String> valoresCuidad = new HashMap<>();
-    HashMap<String, String> valoresBanco = new HashMap<>();
 
     @FXML
     private Button btnAgregarCuenta;
@@ -41,37 +39,42 @@ public class SociosController implements Initializable {
     @FXML
     private ComboBox<String> cbBanco;
 
-    @FXML
-    private ComboBox<String> cbCiudad;
 
     @FXML
     private ComboBox<String> cbMoneda;
 
     @FXML
-    private TextField fieldApellido;
-
-    @FXML
     private TextField fieldCarnet;
-
+    @FXML
+    private TextField fieldApellido;
+    @FXML
+    private TextField fieldCuenta;
     @FXML
     private TextField fieldNombre;
 
+    @FXML
+    private VBox vbAgregarCuentas;
+
+    @FXML
+    private VBox vbListarCuentas;
+
+    @FXML
+    private VBox vbMovimientos;
     @FXML
     private ListView<String> lvSocios;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         listarSocios();
+        obtenerTipoMoneda();
+        obtenerBancos();
+    }
 
-        //cb TipoMoneda
+    private void obtenerTipoMoneda(){
         ObservableList<String> tipoMoneda = FXCollections.observableArrayList();
         tipoMoneda.add("Bolivianos");
         tipoMoneda.add("Dolares");
         cbMoneda.setItems(tipoMoneda);
-
-        obtenerCiudades();
-        obtenerBancos();
-
     }
 
     private void obtenerBancos() {
@@ -95,66 +98,44 @@ public class SociosController implements Initializable {
             String href = elemento.getJSONObject("_links").getJSONObject("self").getString("href");
 
             String id = href.substring(29);
-            String banco = elemento.getString("denominacion");
-
-            valoresBanco.put(id, banco);
 
             bancos.add(id);
         }
-        System.out.println(valoresBanco);
+
         cbBanco.setItems(bancos);
-    }
-
-    private void obtenerCiudades() {
-
-        ObservableList<String> ciudades = FXCollections.observableArrayList();
-
-        HttpClient cliente = HttpClient.newHttpClient();
-        HttpRequest solicitud = HttpRequest.newBuilder().
-                uri(URI.create("http://localhost:8080/ciudades")).
-                header("Content-Type", "application/json").
-                GET().build();
-
-        String respuesta = cliente.sendAsync(solicitud, BodyHandlers.ofString())
-                .thenApply(HttpResponse::body).join();
-
-        JSONObject ciudadesJSON = new JSONObject(respuesta);
-
-        JSONArray listaArrayCiudades = ciudadesJSON.optJSONObject("_embedded").optJSONArray("Ciudad");
-
-        for (Object object : listaArrayCiudades) {
-            JSONObject elemento = new JSONObject(object.toString());
-            String id = elemento.getJSONObject("_links").getJSONObject("self").getString("href").substring(31);
-
-            ciudades.add(id);
-        }
-
-        cbCiudad.setItems(ciudades);
     }
 
     @FXML
     private void agregarCuenta(){
+        int id = lvSocios.getSelectionModel().getSelectedIndex();
+        String idSocio = listaArraySocios.getJSONObject(id).getJSONObject("_links").getJSONObject("self")
+                .getString("href");
         String bancoSeleccionado = cbBanco.getValue();
-        String ciudadSeleccionada = cbCiudad.getValue();
 
         //Obtenemos los datos a enviar
-        JSONObject nuevaCuenta = new JSONObject();
-        nuevaCuenta.put("nombreSocio", fieldNombre.getText());
-        nuevaCuenta.put("apellidoSocio", fieldApellido.getText());
-        nuevaCuenta.put("cedula", Integer.parseInt(fieldCarnet.getText()));
+        URI banco = URI.create("http://localhost:8080/bancos/"+bancoSeleccionado);
+        URI socio = URI.create(idSocio);
 
-        int id = lvSocios.getSelectionModel().getSelectedIndex();
-        String idSocio = listaArraySocios.getJSONObject(id).getJSONObject("_links").getJSONObject("self").getString("href");
+        JSONObject nuevaCuenta = new JSONObject();
+        nuevaCuenta.put("idCuenta", Integer.parseInt(fieldCuenta.getText()));
+        nuevaCuenta.put("moneda", cbMoneda.getValue());
+        nuevaCuenta.put("idBanco", banco);
+        nuevaCuenta.put("idSocio", socio);
 
         HttpClient cliente = HttpClient.newHttpClient();
-        HttpRequest solicitud = HttpRequest.newBuilder().uri(URI.create(idSocio+"/cuenta"))
-                        .header("Content-Type", "application/json").GET().build();
+        HttpRequest solicitud = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/cuentas"))
+                .header("Content-Type", "application/json")
+                .POST(BodyPublishers.ofString(nuevaCuenta.toString()))
+                .build();
 
         String respuesta = cliente.sendAsync(solicitud, BodyHandlers.ofString()).thenApply(HttpResponse::body).join();
-        System.out.println(respuesta);
+
+        if (respuesta.equals(""))
+            System.out.println("Cuenta agregada");
+        else
+            System.out.println("No se pudo agregar la cuenta");
 
     }
-
     @FXML
     private void agregarSocio() throws IOException {
         //Obtenemos los datos a enviar
@@ -187,7 +168,6 @@ public class SociosController implements Initializable {
 
 
     }
-
     @FXML
     private void listarSocios(){
         HttpClient cliente = HttpClient.newHttpClient();
@@ -211,13 +191,26 @@ public class SociosController implements Initializable {
         }
     }
 
-    //Metodo para obtener la llave de un valor
-    public static <K, V> K getSingleKeyFromValue(Map<K, V> map, V value) {
-        for (Map.Entry<K, V> entry : map.entrySet()) {
-            if (Objects.equals(value, entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
+    @FXML
+    private void agregarCuentas(){
+        vbAgregarCuentas.setVisible(true);
+        vbListarCuentas.setVisible(false);
+        vbMovimientos.setVisible(false);
     }
+    @FXML
+    private void listarCuentas(){
+        vbListarCuentas.setVisible(true);
+        vbAgregarCuentas.setVisible(false);
+        vbMovimientos.setVisible(false);
+    }
+
+    @FXML
+    private void movimientos(){
+        vbMovimientos.setVisible(true);
+        vbAgregarCuentas.setVisible(false);
+        vbListarCuentas.setVisible(false);
+    }
+
+
+
 }

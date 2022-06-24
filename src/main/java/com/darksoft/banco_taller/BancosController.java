@@ -19,9 +19,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.net.http.HttpRequest.BodyPublishers;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class BancosController implements Initializable {
