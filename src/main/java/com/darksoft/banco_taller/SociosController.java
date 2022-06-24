@@ -90,7 +90,6 @@ public class SociosController implements Initializable {
 
         JSONArray listaArrayBancos = bancosJSON.optJSONObject("_embedded").optJSONArray("Banco");
 
-
         for (Object object : listaArrayBancos) {
             JSONObject elemento = new JSONObject(object.toString());
             String href = elemento.getJSONObject("_links").getJSONObject("self").getString("href");
@@ -125,26 +124,34 @@ public class SociosController implements Initializable {
 
         for (Object object : listaArrayCiudades) {
             JSONObject elemento = new JSONObject(object.toString());
-            String href = elemento.getJSONObject("_links").getJSONObject("self").getString("href");
+            String id = elemento.getJSONObject("_links").getJSONObject("self").getString("href").substring(31);
 
-            int id = Integer.parseInt(href.substring(href.lastIndexOf("/")+1));
-            String ciudad = elemento.getString("ciudad");
-            valoresCuidad.put(String.valueOf(id), ciudad);
-
-            ciudades.add(ciudad);
+            ciudades.add(id);
         }
-        System.out.println(valoresCuidad);
+
         cbCiudad.setItems(ciudades);
     }
 
     @FXML
     private void agregarCuenta(){
         String bancoSeleccionado = cbBanco.getValue();
-        String llaveBanco = getSingleKeyFromValue(valoresBanco, bancoSeleccionado);
-        System.out.println(bancoSeleccionado);
-        System.out.println(llaveBanco);
-
         String ciudadSeleccionada = cbCiudad.getValue();
+
+        //Obtenemos los datos a enviar
+        JSONObject nuevaCuenta = new JSONObject();
+        nuevaCuenta.put("nombreSocio", fieldNombre.getText());
+        nuevaCuenta.put("apellidoSocio", fieldApellido.getText());
+        nuevaCuenta.put("cedula", Integer.parseInt(fieldCarnet.getText()));
+
+        int id = lvSocios.getSelectionModel().getSelectedIndex();
+        String idSocio = listaArraySocios.getJSONObject(id).getJSONObject("_links").getJSONObject("self").getString("href");
+
+        HttpClient cliente = HttpClient.newHttpClient();
+        HttpRequest solicitud = HttpRequest.newBuilder().uri(URI.create(idSocio+"/cuenta"))
+                        .header("Content-Type", "application/json").GET().build();
+
+        String respuesta = cliente.sendAsync(solicitud, BodyHandlers.ofString()).thenApply(HttpResponse::body).join();
+        System.out.println(respuesta);
 
     }
 

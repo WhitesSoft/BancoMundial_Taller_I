@@ -14,8 +14,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
+import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.net.http.HttpRequest.BodyPublishers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -23,8 +26,9 @@ import java.util.ResourceBundle;
 
 public class BancosController implements Initializable {
 
-    HashMap<String, String> valoresCuidad = new HashMap<>();
-    private JSONArray lista;
+    JSONArray listaArrayCiudades;
+    JSONObject ciudadesJSON;
+    String respuesta;
 
     @FXML
     private Button btnAgregarBanco;
@@ -52,70 +56,69 @@ public class BancosController implements Initializable {
                 header("Content-Type", "application/json").
                 GET().build();
 
-        String respuesta = cliente.sendAsync(solicitud, HttpResponse.BodyHandlers.ofString())
+        respuesta = cliente.sendAsync(solicitud, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body).join();
 
-        JSONObject ciudadesJSON = new JSONObject(respuesta);
+        ciudadesJSON = new JSONObject(respuesta);
 
-        JSONArray listaArrayCiudades = ciudadesJSON.optJSONObject("_embedded").optJSONArray("Ciudad");
-
+        listaArrayCiudades = ciudadesJSON.optJSONObject("_embedded").optJSONArray("Ciudad");
 
         for (Object object : listaArrayCiudades) {
             JSONObject elemento = new JSONObject(object.toString());
-            String href = elemento.getJSONObject("_links").getJSONObject("self").getString("href");
-
-            int id = Integer.parseInt(href.substring(href.lastIndexOf("/")+1));
-            String ciudad = elemento.getString("ciudad");
-
-            valoresCuidad.put(String.valueOf(id), ciudad);
-            ciudades.add(ciudad);
+            String id = elemento.getJSONObject("_links").getJSONObject("self").getString("href").substring(31);
+            ciudades.add(id);
         }
-        //System.out.println(valoresCuidad);
+
         cbCiudad.setItems(ciudades);
     }
 
     @FXML
     private void agregarBanco() throws IOException {
-        //Obtenemos el valor de la ciudad
-        String ciudadSeleccionada = cbCiudad.getValue();
-        String llave = getSingleKeyFromValue(valoresCuidad, ciudadSeleccionada);
 
-        String id = "http://localhost:8080/ciudades/" + llave;
+        String ciudadSeleccionada = cbCiudad.getValue();
+        System.out.println(ciudadSeleccionada);
 
         JSONObject nuevoBanco = new JSONObject();
         nuevoBanco.put("sigla", fieldSigla.getText());
         nuevoBanco.put("denominacion", fieldDenominacion.getText());
-        nuevoBanco.put("idCiudad", llave);
+        nuevoBanco.put("idCiudad", ciudadSeleccionada);
 
         //Hacemos el post
         HttpClient cliente = HttpClient.newHttpClient();
         HttpRequest solicitud = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/bancos"))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(nuevoBanco.toString()))
+                .POST(BodyPublishers.ofString(nuevoBanco.toString()))
                 .build();
 
-        String respuesta = cliente.sendAsync(solicitud, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body).join();
+        HttpHeaders respuesta = cliente.sendAsync(solicitud, BodyHandlers.ofString())
+                .thenApply(HttpResponse::headers).join();
 
-        System.out.println(respuesta);
-        if (respuesta.equals("")) {
-            System.out.println("Banco agregado");
+        if (respuesta.firstValueAsLong("content-length").getAsLong() == 0){
 
-            fieldSigla.setText("");
-            fieldDenominacion.setText("");
+            System.out.println("http://localhost:8080/ciudades/"+ cbCiudad.getValue());
+
+            HttpClient relacion = HttpClient.newHttpClient();
+            HttpRequest solicitud_muchos_a_muchos = HttpRequest.newBuilder()
+                    .uri(URI.create(respuesta.firstValue("location").get() + "/ciudad"))
+                    .header("Content-Type", "text/uri-list")
+                    .PUT(BodyPublishers.ofString("http://localhost:8080/ciudades/"+ cbCiudad.getValue()))
+                    .build();
+
+            String resp = relacion.sendAsync(solicitud_muchos_a_muchos, BodyHandlers.ofString()).
+                    thenApply(HttpResponse::body).join();
+
+            System.out.println(resp);
+            if (resp.equals(""))
+                System.out.println("Banco agregado");
+            else
+                System.out.println("No se pudo agregar el banco");
+
+        }else {
+            JSONObject Error = new JSONObject(respuesta);
+            System.out.println(Error.getJSONObject("cause")
+                    .getString("message"));
         }
-        else
-            System.out.println("No se pudo agregar el banco");
-
 
     }
 
-    public static <K, V> K getSingleKeyFromValue(Map<K, V> map, V value) {
-        for (Map.Entry<K, V> entry : map.entrySet()) {
-            if (Objects.equals(value, entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
 }
