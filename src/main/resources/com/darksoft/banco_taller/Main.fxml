@@ -8,6 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -90,17 +91,56 @@
                <children>
                   <VBox layoutX="6.0" layoutY="5.0" prefHeight="685.0" prefWidth="850.0">
                      <children>
-                        <Label text="ULTIMOS MOVIMIENTOS" textFill="WHITE">
+                        <Label text="ULTIMOS MOVIMIENTOS REALIZADOS EN EL BANCO MUNDIAL..." textFill="WHITE">
                            <font>
-                              <Font size="21.0" />
+                              <Font name="System Bold" size="21.0" />
                            </font>
                            <VBox.margin>
                               <Insets left="20.0" top="20.0" />
                            </VBox.margin>
                         </Label>
+                        <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="850.0" spacing="10.0">
+                           <children>
+                              <Label text="cuenta" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold Italic" size="13.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="65.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label text="FechaHoraTransaccion" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold Italic" size="13.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label text="tipo" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold Italic" size="13.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="65.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label text="monto" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold Italic" size="13.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="50.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </HBox>
                         <ListView fx:id="lvUltimosMoviemientos" prefHeight="592.0" prefWidth="810.0">
                            <VBox.margin>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="5.0" />
                            </VBox.margin>
                         </ListView>
                      </children>

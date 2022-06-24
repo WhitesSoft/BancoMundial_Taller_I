@@ -338,7 +338,6 @@ public class SociosController implements Initializable {
             String respuestaMuchosAMuchos = relacion.sendAsync(solicitud_muchos_a_muchos, BodyHandlers.ofString())
                     .thenApply(HttpResponse::body).join();
 
-            System.out.println(respuestaMuchosAMuchos);
             if (respuestaMuchosAMuchos.equals("")){
                 System.out.println("Movimiento agregado");
                 listarMovimientos();
