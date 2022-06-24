@@ -89,9 +89,6 @@ public class BancosController implements Initializable {
         HttpHeaders respuesta = cliente.sendAsync(solicitud, BodyHandlers.ofString())
                 .thenApply(HttpResponse::headers).join();
 
-        System.out.println(respuesta.firstValue("location").get());
-        System.out.println("http://localhost:8080/ciudades/"+ cbCiudad.getValue());
-
         if (respuesta.firstValueAsLong("content-length").getAsLong() == 0){
 
             HttpClient relacion = HttpClient.newHttpClient();

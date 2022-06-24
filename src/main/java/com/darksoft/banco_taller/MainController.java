@@ -51,6 +51,7 @@ public class MainController implements Initializable {
     private void buttons(ActionEvent event) {
         if (event.getSource() == btnInicio) {
             bp.setCenter(contenedor);
+            obtenerMovimientos();
         }
         if (event.getSource() == btnSocios) {
             Parent root = null;
@@ -108,14 +109,16 @@ public class MainController implements Initializable {
 
         lvUltimosMoviemientos.getItems().clear();
 
-        JSONArray a = new JSONArray(listaArrayMovimientos);
-        for (int i = 0; i < a.length(); i++){
+        JSONArray datosMovimientos = new JSONArray(listaArrayMovimientos);
 
-            String fechaHora = a.getJSONObject(i).getString("fechaHora");
-            String tipo = a.getJSONObject(i).getString("tipo");
-            String monto = a.getJSONObject(i).getString("monto");
+        for (int i = 0; i < datosMovimientos.length(); i++){
 
-            lvUltimosMoviemientos.getItems().add(fechaHora + "\t" + tipo + "\t" + monto);
+            String idCuenta = datosMovimientos.getJSONObject(i).getString("idCuenta");
+            String fechaHora = datosMovimientos.getJSONObject(i).getString("fechaHora");
+            String tipo = datosMovimientos.getJSONObject(i).getString("tipo");
+            String monto = datosMovimientos.getJSONObject(i).getString("monto");
+
+            lvUltimosMoviemientos.getItems().add("\t" + idCuenta + "\t\t" + fechaHora + "\t\t\t" + tipo + "\t\t" + monto);
 
         }
     }
